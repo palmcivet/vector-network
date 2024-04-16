@@ -1,15 +1,11 @@
-import { Header } from '@/components/header';
-import { Toolbar } from '@/components/toolbar';
-import { Stage } from '@/components/stage';
-import { Converter } from '@/components/converter';
+import { Header } from '@/layout/header';
+import { Main } from '@/layout/main';
 
 export function App() {
   return (
-    <main class="app flex flex-col gap-6">
+    <main class="lg:h-screen flex flex-col min-w-sm">
       <Header />
-      <Toolbar />
-      <Stage />
-      <Converter />
+      <Main />
     </main>
   );
 }

@@ -3,7 +3,7 @@ import { App } from '@/app';
 
 import 'virtual:uno.css';
 import '@unocss/reset/tailwind.css';
-import '@/styles/index.less';
+import '@/styles/index.css';
 
 const root = document.getElementById('root');
 

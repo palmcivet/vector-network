@@ -1,11 +1,11 @@
-import './github.css';
+import './style.css';
 
 interface Props {
   url: string;
   size?: number;
 }
 
-export const GitHubIcon = ({ url, size = 60 }: Props) => (
+export const ForkmeIcon = ({ url, size = 60 }: Props) => (
   <a href={url} class="github-corner" aria-label="View source on GitHub">
     <svg
       width={size}
