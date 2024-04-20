@@ -20,6 +20,7 @@
     "vite-plugin-solid": "^2.10.2"
   },
   "optionalDependencies": {
+    "@figma/plugin-typings": "^1.91.0",
     "@types/node": "^20.12.7"
   }
 }

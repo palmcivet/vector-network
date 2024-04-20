@@ -1,4 +1,4 @@
-import { BendIcon, MoveIcon, PaintIcon, PenIcon, PencilIcon } from '@/shared/icon';
+import { BendIcon, MoveIcon, PaintIcon, PenIcon, PencilIcon } from '@/components/icons';
 
 const TOOLS = {
   Move: <MoveIcon />,
