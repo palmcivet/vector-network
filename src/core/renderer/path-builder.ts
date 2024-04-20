@@ -84,11 +84,18 @@ function buildStrokeCapPath(
 }
 
 /**
- * @description 包含起点的圆弧（可能）和线段（可能）
- * 线段 + 圆弧/圆角 + 端点槽位（可选）
- * @param withCap 是否包含端点的槽位
+ * @description 线段 + 圆弧
+ * @todo
  */
-function buildSingleCompositePath(withCap = false): Path {
+function buildSingleCompositePath(): Path {
+  const path = new Path();
+  return path;
+}
+
+/**
+ * @description 线段 + 圆弧/圆角 + 端点槽位
+ */
+function buildSingleRenderPath(): Path {
   const path = new Path();
 
   // cornerRadius
@@ -98,10 +105,22 @@ function buildSingleCompositePath(withCap = false): Path {
 
 /**
  * @description build vector path
- * 线段 + 圆弧
+ * @description 线段 + 圆弧
  * @todo
  */
 export function buildVectorStrokePath(
+  vertices: ReadonlyArray<VectorVertex>,
+  segments: ReadonlyArray<VectorSegment>
+): Path {
+  const path = new Path();
+  return path;
+}
+
+/**
+ * @description build vector path
+ * @description 线段 + 圆弧/圆角 + 端点
+ */
+export function buildVectorRenderPath(
   vertices: ReadonlyArray<VectorVertex>,
   segments: ReadonlyArray<VectorSegment>
 ): Path {
@@ -115,15 +134,5 @@ export function buildVectorStrokePath(
     path.lineTo(endPoint.x, endPoint.y);
   });
 
-  return path;
-}
-
-/**
- * @description build vector path
- * 线段 + 圆弧/圆角 + 端点
- * @todo
- */
-export function buildVectorRenderPath(): Path {
-  const path = new Path();
   return path;
 }

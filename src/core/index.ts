@@ -1,5 +1,5 @@
 import { Application, EventEmitter, Graphics } from 'pixi.js';
-import { buildStrokeStyle, buildVectorStrokePath } from '@/core/renderer';
+import { buildStrokeStyle, buildVectorRenderPath } from '@/core/renderer';
 
 type Event = '';
 
@@ -36,7 +36,7 @@ export class App extends EventEmitter<Event> {
 
   public updateData(data: VectorNetwork) {
     this.graphics.clear();
-    const strokePath = buildVectorStrokePath(data.vertices, data.segments);
+    const strokePath = buildVectorRenderPath(data.vertices, data.segments);
     this.graphics.path(strokePath);
     this.graphics.stroke(buildStrokeStyle());
   }

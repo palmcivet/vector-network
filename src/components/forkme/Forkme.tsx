@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const ForkmeIcon = ({ url, size = 60 }: Props) => (
-  <a href={url} class="github-corner" aria-label="View source on GitHub">
+  <a href={url} class="github-corner" aria-label="View source on GitHub" target="_blank">
     <svg
       width={size}
       height={size}
