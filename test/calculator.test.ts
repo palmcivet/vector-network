@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { calculateActiveIndices } from '@/core/renderer/calculator';
+import { calculateActiveIndices } from '@/core/interaction/calculator';
 
 describe('calculator', () => {
   test('calculateActiveIndices', () => {

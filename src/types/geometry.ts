@@ -3,6 +3,8 @@ export type Point = {
   y: number;
 };
 
+export type Vector = Point;
+
 export type Segment = {
   start: Point;
   end: Point;
