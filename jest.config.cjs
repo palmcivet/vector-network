@@ -4,7 +4,7 @@
 module.exports = {
   verbose: true,
   preset: 'ts-jest',
-  testMatch: ['**/test/**/*.test.ts'],
+  testMatch: ['**/__tests__/*.test.ts'],
   testPathIgnorePatterns: ['/node_modules/', '.*\\.d\\.ts$'],
   moduleFileExtensions: ['js', 'ts'],
   moduleNameMapper: {

@@ -1,5 +1,5 @@
 import { Curve, Point } from '@/types';
-import { calculateDegreeBetweenSegments, calculateVertexDistance } from '@/shared/path';
+import { calculateDegreeBetweenSegments, calculateVertexDistance } from '@/shared/math';
 
 /**
  * @description 计算实际倒角的圆角半径，∠AOB
