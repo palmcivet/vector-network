@@ -1,5 +1,5 @@
 import { Curve, Point } from '@/types';
-import { calculateDegreeBetweenSegments, calculateVertexDistance } from '@/shared/math';
+import { calculateDegreeBetweenPoints, calculateVertexDistance } from '@/shared/math';
 
 /**
  * @description 计算实际倒角的圆角半径，∠AOB
@@ -8,7 +8,11 @@ import { calculateDegreeBetweenSegments, calculateVertexDistance } from '@/share
  * @param a 顶点相邻边的另一端顶点
  * @param b 顶点相邻边的另一端顶点
  */
-function calculateCornerRadius(o: Required<VectorVertex>, a: Point, b: Point): number {
+export function calculateCornerRadius(
+  o: Required<VectorVertex>,
+  a: Point,
+  b: Point
+): number {
   const lengthOA = calculateVertexDistance(o, a);
   const lengthOB = calculateVertexDistance(o, b);
 
@@ -73,10 +77,8 @@ export function calculateRadiusPosition(
 ): Curve {
   // 计算所围成的 θ 角
   const theta = Math.abs(
-    calculateDegreeBetweenSegments(
-      { start: fromVertex, end: cornerVertex },
-      { start: cornerVertex, end: toVertex }
-    )
+    calculateDegreeBetweenPoints(fromVertex, cornerVertex) -
+      calculateDegreeBetweenPoints(cornerVertex, toVertex)
   );
 
   // 计算 h 的长度

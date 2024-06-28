@@ -83,6 +83,7 @@ export function getNeighborSegmentIndices(segments: ReadonlyArray<VectorSegment>
 /**
  * @description 格式化顶点数据
  * @param vertex
+ * @todo
  */
 export function formatVertex(vertex: VectorVertex): Required<VectorVertex> {
   return vertex as Required<VectorVertex>;
@@ -106,6 +107,8 @@ export function hasStrokeCap(vertex: VectorVertex): boolean {
 
 /**
  * @description 判断是否是叶子节点
+ * @param indices
+ * @param index
  */
 export function isLeafVertex(indices: NeighborIndices, index: VertexIndex): boolean {
   return indices.get(index)?.length === 1;
@@ -113,6 +116,8 @@ export function isLeafVertex(indices: NeighborIndices, index: VertexIndex): bool
 
 /**
  * @description 判断是否是拐角节点，被两条线段相连
+ * @param indices
+ * @param index
  */
 export function isCornerVertex(indices: NeighborIndices, index: VertexIndex): boolean {
   return indices.get(index)?.length === 2;

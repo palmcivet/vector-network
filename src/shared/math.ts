@@ -1,4 +1,4 @@
-import { Point, Segment, Vector } from '@/types';
+import { Point, Vector } from '@/types';
 
 /**
  * @description 计算顶点距离
@@ -60,16 +60,4 @@ export function calculateDegreeBetweenPoints(a: Point, b: Point) {
   }
 
   return degree;
-}
-
-/**
- * @description 计算两条线段的夹角，夹角为 b - a
- * @param a 线段 a
- * @param b 线段 b
- */
-export function calculateDegreeBetweenSegments(a: Segment, b: Segment): number {
-  return (
-    calculateDegreeBetweenPoints(b.start, b.end) -
-    calculateDegreeBetweenPoints(a.start, a.end)
-  );
 }

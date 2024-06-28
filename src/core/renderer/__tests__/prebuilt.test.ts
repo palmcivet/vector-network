@@ -1,5 +1,11 @@
 import { describe, expect, test } from '@jest/globals';
-import { hasCornerRadius, hasStrokeCap } from '@/core/renderer/prebuilt';
+import { NeighborIndices } from '@/types';
+import {
+  hasCornerRadius,
+  hasStrokeCap,
+  isCornerVertex,
+  isLeafVertex,
+} from '@/core/renderer/prebuilt';
 
 describe('prebuilt', () => {
   test('hasCornerRadius', () => {
@@ -58,5 +64,24 @@ describe('prebuilt', () => {
         y: 1,
       })
     ).toBe(false);
+  });
+
+  test('isLeafVertex', () => {
+    const map = new Map() as NeighborIndices;
+    map.set(0, [1, 2]);
+    map.set(1, [0]);
+    map.set(2, [0]);
+    expect(isLeafVertex(map, 1)).toBe(true);
+    expect(isLeafVertex(map, 0)).toBe(false);
+    expect(isLeafVertex(map, 3)).toBe(false);
+  });
+
+  test('isCornerVertex', () => {
+    const map = new Map() as NeighborIndices;
+    map.set(0, [1, 2]);
+    map.set(1, [0]);
+    map.set(2, [0]);
+    expect(isCornerVertex(map, 0)).toBe(true);
+    expect(isCornerVertex(map, 1)).toBe(false);
   });
 });
