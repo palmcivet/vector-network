@@ -1,8 +1,9 @@
 import { describe, expect, test } from '@jest/globals';
 import {
   calculateVertexDistance,
-  calculateDegreeBetweenPoints,
+  calculateSegmentRadian,
   calculateRadianBetweenPoints,
+  calculateRadianBetweenSegments,
 } from '@/shared/math';
 
 describe('math', () => {
@@ -19,12 +20,74 @@ describe('math', () => {
   });
 
   test('calculateRadianBetweenPoints', () => {
-    expect(calculateRadianBetweenPoints({ x: 1, y: 2 }, { x: 3, y: 4 })).toBeCloseTo(
-      0.98386991
+    expect(calculateRadianBetweenPoints({ x: 1, y: 0 }, { x: 1, y: 1 })).toBeCloseTo(
+      Math.PI / 4
+    );
+
+    expect(calculateRadianBetweenPoints({ x: 1, y: 0 }, { x: 0, y: 1 })).toBeCloseTo(
+      Math.PI / 2
+    );
+
+    expect(calculateRadianBetweenPoints({ x: 1, y: 0 }, { x: -1, y: 1 })).toBeCloseTo(
+      Math.PI * (3 / 4)
+    );
+
+    expect(calculateRadianBetweenPoints({ x: 1, y: 0 }, { x: -1, y: 0 })).toBeCloseTo(
+      Math.PI
+    );
+
+    expect(calculateRadianBetweenPoints({ x: 1, y: 0 }, { x: -1, y: -1 })).toBeCloseTo(
+      Math.PI * (3 / 4)
     );
   });
 
-  test('calculateDegreeBetweenPoints', () => {
-    expect(calculateDegreeBetweenPoints({ x: 1, y: 2 }, { x: 3, y: 4 })).toBeCloseTo(-45);
+  test('calculateSegmentRadian', () => {
+    expect(
+      calculateSegmentRadian({
+        start: { x: 0, y: 0 },
+        end: { x: 5, y: 0 },
+      })
+    ).toBeCloseTo(0);
+
+    expect(
+      calculateSegmentRadian({
+        start: { x: 0, y: 0 },
+        end: { x: -5, y: 0 },
+      })
+    ).toBeCloseTo(Math.PI);
+
+    expect(
+      calculateSegmentRadian({
+        start: { x: 0, y: 0 },
+        end: { x: 1, y: 1 },
+      })
+    ).toBeCloseTo(Math.PI / 4);
+
+    expect(
+      calculateSegmentRadian({
+        start: { x: 0, y: 0 },
+        end: { x: -1, y: -1 },
+      })
+    ).toBeCloseTo(-Math.PI * (3 / 4));
+
+    expect(
+      calculateSegmentRadian({
+        start: { x: 0, y: 0 },
+        end: { x: 0, y: -1 },
+      })
+    ).toBeCloseTo(-Math.PI / 2);
+  });
+
+  test('calculateRadianBetweenSegments', () => {
+    expect(
+      calculateRadianBetweenSegments(
+        { x: 30, y: 32 },
+        {
+          x: 0,
+          y: 32,
+        },
+        { x: 54.5, y: 0 }
+      )
+    ).toBeCloseTo(1.968885);
   });
 });

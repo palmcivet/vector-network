@@ -141,11 +141,10 @@ export function buildVectorStrokePath(
     const startVertex = formatVertex(vertices.at(segment.start)!);
     const endVertex = formatVertex(vertices.at(segment.end)!);
 
+    // 记录线段的起点和终点
     if (!segmentParams[segmentIndex]) {
       segmentParams[segmentIndex] = { start: startVertex, end: endVertex };
     }
-
-    // 线帽和圆角不会同时存在
 
     // 判断叶子节点，判断是否有线帽
     if (isLeafVertex(neighborVertexIndices, segment.start) && hasStrokeCap(startVertex)) {
@@ -155,28 +154,23 @@ export function buildVectorStrokePath(
         endVertex,
         strokeWeight
       );
-
-      // 记录线段的起点和终点
       segmentParams[segmentIndex].start = strokeCapPoint;
-      segmentParams[segmentIndex].end = { x: endVertex.x, y: endVertex.y };
     }
     // 判断是否被两条线段相连，判断是否有圆角
     else if (
       isCornerVertex(neighborVertexIndices, segment.start) &&
       hasCornerRadius(startVertex)
     ) {
-      // 从邻接表取出当前顶点的邻居顶点下标，必然有两个
+      // 从邻接表取出当前顶点的邻居顶点下标，必然有两个，一个是当前线段的终点，一个是相邻线段的起点
       const [previousVertexIndex, nextVertexIndex] = neighborVertexIndices.get(
         segment.start
       )!;
-      const fromIndex =
-        previousVertexIndex === segment.start ? nextVertexIndex : previousVertexIndex;
-      const fromVertex = formatVertex(vertices.at(fromIndex)!);
+      const previousIndex =
+        previousVertexIndex === segment.end ? nextVertexIndex : previousVertexIndex;
+      const previousVertex = formatVertex(vertices.at(previousIndex)!);
 
       // 计算曲线的控制点
-      const curvePoints = calculateRadiusPosition(startVertex, fromVertex, endVertex);
-
-      // 记录曲线参数
+      const curvePoints = calculateRadiusPosition(startVertex, previousVertex, endVertex);
       bezierParams.push(curvePoints);
 
       // 从邻接表取出当前顶点的邻居线段下标，必然有两个
@@ -192,13 +186,9 @@ export function buildVectorStrokePath(
       }
       segmentParams[neighborSegmentIndex].end = curvePoints.from;
 
-      // 记录线段的起点和终点
       segmentParams[segmentIndex].start = curvePoints.to;
-      segmentParams[segmentIndex].end = endVertex;
     } else {
       // 记录线段的起点和终点
-      segmentParams[segmentIndex].start = startVertex;
-      segmentParams[segmentIndex].end = endVertex;
     }
   }
 
@@ -221,7 +211,8 @@ export function buildVectorStrokePath(
     );
   }
 
-  if (false) {
+  const closePath = false;
+  if (closePath) {
     path.closePath();
   }
 

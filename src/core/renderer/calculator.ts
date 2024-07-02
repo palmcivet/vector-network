@@ -1,5 +1,5 @@
 import { Curve, Point } from '@/types';
-import { calculateDegreeBetweenPoints, calculateVertexDistance } from '@/shared/math';
+import { calculateRadianBetweenSegments, calculateVertexDistance } from '@/shared/math';
 
 /**
  * @description 计算实际倒角的圆角半径，∠AOB
@@ -76,25 +76,25 @@ export function calculateRadiusPosition(
   toVertex: VectorVertex
 ): Curve {
   // 计算所围成的 θ 角
-  const theta = Math.abs(
-    calculateDegreeBetweenPoints(fromVertex, cornerVertex) -
-      calculateDegreeBetweenPoints(cornerVertex, toVertex)
-  );
-
-  // 计算 h 的长度
-  const h = ((4 / 3) * (1 - Math.cos(theta / 2))) / Math.sin(theta / 2);
+  const theta = calculateRadianBetweenSegments(cornerVertex, fromVertex, toVertex);
 
   // 计算 radius
   const radius = calculateCornerRadius(cornerVertex, fromVertex, toVertex);
 
   // 计算 BF 的长度
   const bf = radius / Math.tan(theta / 2);
+  // TODO(performance) 求角度时已计算过边长，可以考虑优化
   const bc = calculateVertexDistance(fromVertex, cornerVertex);
+  const ba = calculateVertexDistance(toVertex, cornerVertex);
 
+  // 计算 h 的长度
+  const h = ((4 / 3) * (1 - Math.cos(theta / 2))) / Math.sin(theta / 2);
+
+  // 计算控制点
   const from = calculateControlPoint(fromVertex, cornerVertex, bf / bc);
-  const to = calculateControlPoint(toVertex, cornerVertex, bf / bc);
-  const controlFrom = calculateControlPoint(from, cornerVertex, (bf - h) / bf);
-  const controlTo = calculateControlPoint(to, cornerVertex, (bf - h) / bf);
+  const to = calculateControlPoint(toVertex, cornerVertex, bf / ba);
+  const controlFrom = calculateControlPoint(from, cornerVertex, (bf - h * radius) / bf);
+  const controlTo = calculateControlPoint(to, cornerVertex, (bf - h * radius) / bf);
 
   return {
     from,
