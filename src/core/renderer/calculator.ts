@@ -1,4 +1,4 @@
-import { Curve, Point } from '@/types';
+import { Curve, Point, Segment } from '@/types';
 import { calculateRadianBetweenSegments, calculateVertexDistance } from '@/shared/math';
 
 /**
@@ -101,5 +101,28 @@ export function calculateRadiusPosition(
     to,
     controlFrom,
     controlTo,
+  };
+}
+
+/**
+ * @description 计算贝塞尔曲线控制点
+ * @param 线段，提供起点终点
+ * @param 控制点参数，提供控制点的位置（偏移）
+ */
+export function calculateBezierPosition(
+  { start, end }: Segment,
+  { tangentStart, tangentEnd }: Required<VectorSegment>
+): Curve {
+  return {
+    from: start,
+    to: end,
+    controlFrom: {
+      x: start.x + tangentStart.x,
+      y: start.y + tangentStart.y,
+    },
+    controlTo: {
+      x: end.x + tangentEnd.x,
+      y: end.y + tangentEnd.y,
+    },
   };
 }

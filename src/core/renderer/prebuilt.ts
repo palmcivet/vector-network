@@ -122,3 +122,18 @@ export function isLeafVertex(indices: NeighborIndices, index: VertexIndex): bool
 export function isCornerVertex(indices: NeighborIndices, index: VertexIndex): boolean {
   return indices.get(index)?.length === 2;
 }
+
+/**
+ * @description 判断是否是贝塞尔曲线
+ * @param segment
+ */
+export function isBezierSegment(
+  segment: VectorSegment
+): segment is Required<VectorSegment> {
+  return (
+    (segment.tangentStart !== undefined &&
+      (segment.tangentStart.x !== 0 || segment.tangentStart.y !== 0)) ||
+    (segment.tangentEnd !== undefined &&
+      (segment.tangentEnd.x !== 0 || segment.tangentEnd.y !== 0))
+  );
+}

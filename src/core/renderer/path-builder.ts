@@ -8,10 +8,12 @@ import {
   isLeafVertex,
   getNeighborVertexIndices,
   getNeighborSegmentIndices,
+  isBezierSegment,
 } from '@/core/renderer/prebuilt';
 import {
   calculateRadiusPosition,
   calculateArrowCapPosition,
+  calculateBezierPosition,
 } from '@/core/renderer/calculator';
 
 /**
@@ -187,8 +189,17 @@ export function buildVectorStrokePath(
       segmentParams[neighborSegmentIndex].end = curvePoints.from;
 
       segmentParams[segmentIndex].start = curvePoints.to;
-    } else {
-      // 记录线段的起点和终点
+    }
+    // 判断是否是曲线
+    else if (isBezierSegment(segment)) {
+      const curvePoints = calculateBezierPosition(
+        { start: startVertex, end: endVertex },
+        segment
+      );
+      bezierParams.push(curvePoints);
+
+      // 起点终点置为相同，相当于删除该线段
+      segmentParams[segmentIndex] = { start: startVertex, end: startVertex };
     }
   }
 
