@@ -25,9 +25,7 @@ export function Converter() {
 
   onMount(async () => {
     try {
-      const response = import.meta.env.DEV
-        ? await fetch('./test.json')
-        : await fetch('./simple.json');
+      const response = await fetch('./simple.json');
       const data: object = await response!.json();
 
       if (!isVectorNetwork(data)) {

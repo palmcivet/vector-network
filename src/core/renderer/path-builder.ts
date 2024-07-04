@@ -103,30 +103,35 @@ export function buildStrokeCapPath(
 }
 
 /**
- * @description 线段 + 圆弧
- * @todo
- */
-function buildSingleCompositePath(): Path {
-  const path = new Path();
-  return path;
-}
-
-/**
- * @description 线段 + 圆弧/圆角 + 线帽槽位
- */
-function buildSingleRenderPath(): Path {
-  const path = new Path();
-
-  // cornerRadius
-  // https://www.figma.com/plugin-docs/api/properties/nodes-cornerradius
-  return path;
-}
-
-/**
  * @description build vector path
- * @description 线段 + 圆弧（Hover）
+ * @description 线段 + 圆弧
+ * 使用场景：Hover
  */
 export function buildVectorStrokePath(
+  vertices: ReadonlyArray<VectorVertex>,
+  segments: ReadonlyArray<VectorSegment>
+): Path {
+  const path = new Path();
+
+  segments.forEach((segment) => {
+    const startPoint = vertices[segment.start];
+    const endPoint = vertices[segment.end];
+
+    path.moveTo(startPoint.x, startPoint.y);
+    path.lineTo(endPoint.x, endPoint.y);
+  });
+
+  return path;
+}
+
+/**
+ * @todo 线帽
+ * @todo 圆弧倒圆角
+ * @description build vector path
+ * @description 线段 + 圆弧/圆角 + 线帽
+ * 使用场景：渲染
+ */
+export function buildVectorRenderPath(
   vertices: ReadonlyArray<VectorVertex>,
   segments: ReadonlyArray<VectorSegment>,
   strokeWeight: number
@@ -221,32 +226,6 @@ export function buildVectorStrokePath(
       to.y
     );
   }
-
-  const closePath = false;
-  if (closePath) {
-    path.closePath();
-  }
-
-  return path;
-}
-
-/**
- * @description build vector path
- * @description 线段 + 圆弧/圆角 + 线帽（渲染）
- */
-export function buildVectorRenderPath(
-  vertices: ReadonlyArray<VectorVertex>,
-  segments: ReadonlyArray<VectorSegment>
-): Path {
-  const path = new Path();
-
-  segments.forEach((segment) => {
-    const startPoint = vertices[segment.start];
-    const endPoint = vertices[segment.end];
-
-    path.moveTo(startPoint.x, startPoint.y);
-    path.lineTo(endPoint.x, endPoint.y);
-  });
 
   return path;
 }
