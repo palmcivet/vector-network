@@ -1,2 +1,0 @@
-# vector-network
-Figma VectorNetwork.
