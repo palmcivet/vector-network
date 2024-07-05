@@ -1,5 +1,5 @@
 import { Curve, Point, Segment } from '@/types';
-import { calculateRadianBetweenSegments, calculateVertexDistance } from '@/shared/math';
+import { calculateRadianBetweenSegments, calculateVertexDistance } from '@/shared';
 
 /**
  * @description 计算实际倒角的圆角半径，∠AOB

@@ -1,4 +1,4 @@
-import { Point, Segment } from './geometry';
+import { Point, Segment } from '@/types/geometry';
 
 export type Curve = {
   from: Point;
