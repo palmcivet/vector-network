@@ -16,4 +16,5 @@ export default defineConfig({
     },
   },
   plugins: [unoCSS(), solid()],
+  base: '/vector-network',
 });

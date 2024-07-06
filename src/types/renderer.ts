@@ -1,18 +1,25 @@
-import { Point, Segment } from '@/types/geometry';
+import { Curve, Segment } from '@/types/geometry';
 
-export type Curve = {
-  from: Point;
-  to: Point;
-  controlFrom: Point;
-  controlTo: Point;
+/**
+ * @description 顶点索引
+ */
+export type VertexIndex = number;
+
+/**
+ * @description 线段索引
+ */
+export type SegmentIndex = number;
+
+/**
+ * @description 顶点索引的邻居索引
+ */
+export type NeighborIndices<T> = Map<VertexIndex, Array<T>>;
+
+/**
+ * @description 用于渲染的参数的中间格式
+ */
+export type VectorParams = {
+  curves: Array<Curve>;
+  lines: Array<Segment>;
+  isClosed: boolean;
 };
-
-export type CurveParams = Array<Curve>;
-
-export type SegmentParams = Record<SegmentIndex, Segment>;
-
-export type VertexIndex = number; // 顶点索引
-
-export type SegmentIndex = number; // 线段索引
-
-export type NeighborIndices = Map<VertexIndex, Array<VertexIndex | SegmentIndex>>;

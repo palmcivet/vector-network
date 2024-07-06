@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { NeighborIndices } from '@/types';
+import { NeighborIndices, VertexIndex } from '@/types';
 import {
   hasCornerRadius,
   hasStrokeCap,
@@ -67,7 +67,7 @@ describe('prebuilt', () => {
   });
 
   test('isLeafVertex', () => {
-    const map = new Map() as NeighborIndices;
+    const map = new Map() as NeighborIndices<VertexIndex>;
     map.set(0, [1, 2]);
     map.set(1, [0]);
     map.set(2, [0]);
@@ -77,7 +77,7 @@ describe('prebuilt', () => {
   });
 
   test('isCornerVertex', () => {
-    const map = new Map() as NeighborIndices;
+    const map = new Map() as NeighborIndices<VertexIndex>;
     map.set(0, [1, 2]);
     map.set(1, [0]);
     map.set(2, [0]);

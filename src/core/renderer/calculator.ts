@@ -53,13 +53,10 @@ export function calculateArrowCapPosition(
   strokeCapHeightRatio: number = 5
 ): Point {
   const length = calculateVertexDistance(startVertex, endVertex);
+  const ratio = (strokeCapHeightRatio * strokeWeight) / length;
 
-  const x =
-    startVertex.x +
-    (strokeCapHeightRatio * strokeWeight * (endVertex.x - startVertex.x)) / length;
-  const y =
-    startVertex.y +
-    (strokeCapHeightRatio * strokeWeight * (endVertex.y - startVertex.y)) / length;
+  const x = startVertex.x + (endVertex.x - startVertex.x) * ratio;
+  const y = startVertex.y + (endVertex.y - startVertex.y) * ratio;
 
   return { x, y };
 }

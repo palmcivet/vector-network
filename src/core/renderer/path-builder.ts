@@ -1,5 +1,5 @@
 import { Path } from '@/core/model';
-import { Point, SegmentParams, CurveParams, Segment } from '@/types';
+import { Curve, Point, Segment, SegmentIndex, VectorParams } from '@/types';
 import {
   formatVertex,
   hasCornerRadius,
@@ -17,7 +17,42 @@ import {
 } from '@/core/renderer/calculator';
 
 /**
+ * @description 根据中间格式渲染线段
+ * @param params 中间格式的参数
+ */
+function buildPath({ isClosed, curves, lines }: VectorParams): Path {
+  const path = new Path();
+
+  for (const { start, end } of lines) {
+    path.moveTo(start.x, start.y);
+    path.lineTo(end.x, end.y);
+  }
+
+  for (const { from, to, controlFrom, controlTo } of curves) {
+    path.moveTo(from.x, from.y);
+    path.bezierCurveTo(
+      controlFrom.x,
+      controlFrom.y,
+      controlTo.x,
+      controlTo.y,
+      to.x,
+      to.y
+    );
+  }
+
+  if (isClosed) {
+    path.closePath();
+  }
+
+  return path;
+}
+
+/**
  * @description 构建线帽的路径
+ * @param strokeCap 线帽类型
+ * @param strokeWeight 线宽
+ * @param widthRatio 线帽宽度与线宽的比值
+ * @param heightRatio 线帽高度与线宽的比值
  */
 export function buildStrokeCapPath(
   strokeCap: StrokeCap | ConnectorStrokeCap,
@@ -103,9 +138,11 @@ export function buildStrokeCapPath(
 }
 
 /**
- * @description build vector path
+ * @todo
  * @description 线段 + 圆弧
  * 使用场景：Hover
+ * @param vertices 顶点集
+ * @param segments 线段集
  */
 export function buildVectorStrokePath(
   vertices: ReadonlyArray<VectorVertex>,
@@ -113,6 +150,8 @@ export function buildVectorStrokePath(
 ): Path {
   const path = new Path();
 
+  // 如果 segment 按照顺序，则可以借助下标来确定关系
+  // 但尽量支持不连续的情况
   segments.forEach((segment) => {
     const startPoint = vertices[segment.start];
     const endPoint = vertices[segment.end];
@@ -127,17 +166,19 @@ export function buildVectorStrokePath(
 /**
  * @todo 线帽
  * @todo 圆弧倒圆角
- * @description build vector path
  * @description 线段 + 圆弧/圆角 + 线帽
  * 使用场景：渲染
+ * @param vertices 顶点集
+ * @param segments 线段集
+ * @param strokeWeight 线宽
  */
 export function buildVectorRenderPath(
   vertices: ReadonlyArray<VectorVertex>,
   segments: ReadonlyArray<VectorSegment>,
   strokeWeight: number
 ): Path {
-  const bezierParams: CurveParams = []; // 使用一个数组存储绘曲线的参数
-  const segmentParams: SegmentParams = {}; // 使用一个哈希表存储线段的参数
+  const bezierParams: Array<Curve> = []; // 使用一个数组存储绘曲线的参数
+  const segmentParams: Record<SegmentIndex, Segment> = {}; // 使用一个哈希表存储线段的参数
 
   const neighborVertexIndices = getNeighborVertexIndices(segments);
   const neighborSegmentIndices = getNeighborSegmentIndices(segments);
@@ -208,24 +249,9 @@ export function buildVectorRenderPath(
     }
   }
 
-  const path = new Path();
-
-  for (const { start, end } of Object.values(segmentParams)) {
-    path.moveTo(start.x, start.y);
-    path.lineTo(end.x, end.y);
-  }
-
-  for (const { from, to, controlFrom, controlTo } of bezierParams) {
-    path.moveTo(from.x, from.y);
-    path.bezierCurveTo(
-      controlFrom.x,
-      controlFrom.y,
-      controlTo.x,
-      controlTo.y,
-      to.x,
-      to.y
-    );
-  }
-
-  return path;
+  return buildPath({
+    isClosed: false,
+    curves: bezierParams,
+    lines: Object.values(segmentParams),
+  });
 }

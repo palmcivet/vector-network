@@ -12,7 +12,6 @@ export function calculateVertexDistance(point1: Point, point2: Point): number {
 }
 
 /**
- * @deprecated
  * @description 弧度转角度
  * @param radian
  */
@@ -21,7 +20,6 @@ export function radianToDegree(radian: number): number {
 }
 
 /**
- * @deprecated
  * @description 角度转弧度
  * @param degree
  */
